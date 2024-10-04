@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="stylesheet" type="text/css" href="style_wk3.css">
+	<title>Zhichao Wang</title>
+</head>
+<body>
+	<div id="navbar">
+		<div class="header">
+			<h1>ZHICHAO NUMBER ADDER</h1>
+		</div>
+		<div class="items">
+			<h4>item 1</h4>
+			<h4>item 2</h4>
+			<h4>item 3</h4>
+		</div>
+	</div>
+
+	<div id="main-content">
+		<div class="sidebar">
+			<h3>RESULT</h3>
+			<p id="resultId">0</p>
+			<p id="totalMessage">The total is zero.</p>
+			<h3>HISTORY</h3>
+			<p id="summary">Total additions: 0, <br> Total subtractions: 0</p>
+			<ul id="historyList"></ul>
+		</div>
+		<div class="content">	
+			<h2>CONTROL CENTER</h2>
+			<button id="-2">-2</button>
+			<button id="-1">-1</button>
+			<button id="reset">reset</button>
+			<button id="+1">+1</button>
+			<button id="+2">+2</button>
+			<!-- New Clear History & Results Button -->
+			<p><button id="clearAll">Clear History & Results</button></p>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var total = 0;
+		let history = [];
+		let operationCount = { additions: 0, subtractions: 0 };
+
+		function updateResult() {
+			document.querySelector("#resultId").innerHTML = total;
+		}
+
+		function updateHistory() {
+    		let historyContent = "";
+   			for (let i = 0; i < history.length; i++) {
+       		historyContent += "<li onclick='removeHistoryItem(" + i + ")'>" + history[i] + "</li>";
+    		}
+    
+    	document.querySelector("#historyList").innerHTML = historyContent;
+		}
+
+		function removeHistoryItem(index) {
+    		history.splice(index, 1);
+    		updateHistory(); 
+			}
+
+		function updateSummary() {
+			document.querySelector("#summary").innerHTML = `Total additions: ${operationCount.additions}, <br> Total subtractions: ${operationCount.subtractions}`;
+		}
+
+		function checkTotal() {
+			if (total > 0) {
+				document.querySelector("#totalMessage").innerHTML = "The total is positive.";
+			} else if (total < 0) {
+				document.querySelector("#totalMessage").innerHTML = "The total is negative.";
+			} else {
+				document.querySelector("#totalMessage").innerHTML = "The total is zero.";
+			}
+		}
+
+		// Function to clear everything
+		function ClearAll() {
+			total = 0;
+			history = [];
+			operationCount.additions = 0;
+			operationCount.subtractions = 0;
+			updateResult();
+			updateHistory();
+			updateSummary();
+			checkTotal();
+		}
+
+		document.getElementById("-2").addEventListener("click", function(){
+			total = total - 2;
+			history.push("-2");
+			operationCount.subtractions++;
+			updateResult();
+			updateHistory();
+			updateSummary();
+			checkTotal();
+		});
+
+		document.getElementById("-1").addEventListener("click", function(){
+			total = total - 1;
+			history.push("-1");
+			operationCount.subtractions++;
+			updateResult();
+			updateHistory();
+			updateSummary();
+			checkTotal();
+		});
+
+		document.getElementById("reset").addEventListener("click", function(){
+			total = 0;
+			history.push("Reset");
+			updateResult();
+			updateHistory();
+			checkTotal();  // No need to update operation count for reset
+		});
+
+		document.getElementById("+1").addEventListener("click", function(){
+			total = total + 1;
+			history.push("+1");
+			operationCount.additions++;
+			updateResult();
+			updateHistory();
+			updateSummary();
+			checkTotal();
+		});
+
+		document.getElementById("+2").addEventListener("click", function(){
+			total = total + 2;
+			history.push("+2");
+			operationCount.additions++;
+			updateResult();
+			updateHistory();
+			updateSummary();
+			checkTotal();
+		});
+
+		// Add event listener for the Clear History & Results button
+		document.getElementById("clearAll").addEventListener("click", ClearAll);
+	</script>
+</body>
+</html>
